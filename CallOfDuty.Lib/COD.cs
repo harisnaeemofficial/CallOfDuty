@@ -25,6 +25,9 @@ namespace CallOfDuty.Lib
         public static Matches GetRecentMatches(string apiVersion, string game, string platform, string username, int days)
             => Request<Matches>(new string[] { "crm", "cod", apiVersion, "title", game, "platform", platform, "gamer", username, "matches", "days", days.ToString() });
 
+        public static Emblems GetEmblems(string game, string platform, string uno)
+            => Request<Emblems>(new string[] { "cod", "emblems", game, platform, "uno", uno });
+
         private static T Request<T>(string[] urlParams)
         {
             var url = _baseUrl + string.Join("/", urlParams);
