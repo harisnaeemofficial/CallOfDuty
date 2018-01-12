@@ -11,9 +11,10 @@ namespace CallOfDuty.Mvc.Controllers
     {
         public ActionResult Index()
         {
-            var userProfile = COD.GetUserProfile("v2", "wwii", "psn", "cronotrigga8");
+            var userProfile = COD.GetUserProfile("v1", "wwii", "psn", "cronotrigga8");
             var myLeaderBoard = COD.GetLeaderBoardByUsername("v2", "wwii", "psn", "alltime", "core", "career", "cronotrigga8");
             var pageLeaderBoard = COD.GetLeaderBoardByPage("v2", "wwii", "psn", "alltime", "core", "career", 1);
+            var matches = COD.GetRecentMatches("v2", "wwii", "psn", "cronotrigga8", 1);
             return View();
         }
 

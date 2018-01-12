@@ -20,7 +20,10 @@ namespace CallOfDuty.Lib
             => Request<LeaderBoard>(new string[] { "leaderboards", apiVersion, "title", game, "platform", platform, "time", time, "type", type, "mode", mode, "gamer", username });
         
         public static LeaderBoard GetLeaderBoardByPage(string apiVersion, string game, string platform, string time, string type, string mode, int page)
-        => Request<LeaderBoard>(new string[] { "leaderboards", apiVersion, "title", game, "platform", platform, "time", time, "type", type, "mode", mode, "page", page.ToString() });
+            => Request<LeaderBoard>(new string[] { "leaderboards", apiVersion, "title", game, "platform", platform, "time", time, "type", type, "mode", mode, "page", page.ToString() });
+
+        public static Matches GetRecentMatches(string apiVersion, string game, string platform, string username, int days)
+            => Request<Matches>(new string[] { "crm", "cod", apiVersion, "title", game, "platform", platform, "gamer", username, "matches", "days", days.ToString() });
 
         private static T Request<T>(string[] urlParams)
         {
