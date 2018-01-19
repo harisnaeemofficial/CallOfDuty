@@ -1,31 +1,92 @@
-﻿@{
+﻿@model CallOfDuty.Lib.UserProfile
+@{
     ViewBag.Title = "Home Page";
 }
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script>
+    $(document).ready(function () {
+        console.log("test")
+        $.post("/Home/GetRecentMatches", { username: "Cronotrigga8", days: 7 })
+            .then(function (data) {
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+                var data = data.MatchData;
+                console.log(data)
 
+                Highcharts.chart('container', {
+
+                    title: {
+                        text: 'Recent match statistics'
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: 'Value',
+                            tickLength: 1
+                        }
+                    },
+                    xAxis: {
+                        tickLength: 1
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle'
+                    },
+
+                    plotOptions: {
+                        series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 0,
+                            step:1
+                        }
+                    },
+
+                    series: [{
+                        name: "Assits",
+                        data: data.Matches.map(function (x, i) {
+                            return x.MatchPlayer.Awards.Assists
+                        })
+                    }, {
+                        name: "Longest KillStreak",
+                        data: data.Matches.map(function (x, i) {
+                            return x.MatchPlayer.Awards.LongestKillstreak
+                        })
+                    }],
+
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                            }
+                        }]
+                    }
+
+                });
+
+            });
+    });
+</script>
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="col-lg-12">
+        <h2>Player Stats Lookup</h2>
+        <div class="form-group">
+            <input type="text" class="form-control" value="YOUTUBE__Kor3aYn" id="search" />
+            <button class="btn btn-default">Search...</button>
+        </div>
+        <div id="container"></div>
     </div>
 </div>

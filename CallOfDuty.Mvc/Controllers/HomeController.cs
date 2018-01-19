@@ -11,17 +11,32 @@ namespace CallOfDuty.Mvc.Controllers
     {
         public ActionResult Index()
         {
-            var userProfile = COD.GetUserProfile("v1", "wwii", "psn", "cronotrigga8");
-            var myLeaderBoard = COD.GetLeaderBoardByUsername("v2", "wwii", "psn", "alltime", "core", "career", "cronotrigga8");
-            var pageLeaderBoard = COD.GetLeaderBoardByPage("v2", "wwii", "psn", "alltime", "core", "career", 1);
-            var matches = COD.GetRecentMatches("v2", "wwii", "psn", "cronotrigga8", 1);
+            var leaderboard = COD.GetUserProfile("v2", "wwii", "psn", "Cronotrigga8");
+            var myLeaderBoard = COD.GetLeaderBoardByUsername("v2", "wwii", "psn", "alltime", "core", "career", "YOUTUBE__Kor3aYn");
+            var pageLeaderBoard = COD.GetLeaderBoardByPage("v2", "wwii", "psn", "alltime", "core", "career", 4);
+            var matches = COD.GetRecentMatches("v2", "wwii", "psn", "YOUTUBE__Kor3aYn", 1);
             return View();
+        }
+
+        public JsonResult GetUserProfile(string username)
+        {
+            return new JsonResult()
+            {
+                Data = COD.GetUserProfile("v2", "wwii", "psn", username)
+            };
+        }
+
+        public JsonResult GetRecentMatches(string username, int days)
+        {
+            return new JsonResult()
+            {
+                Data = COD.GetRecentMatches("v2", "wwii", "psn", username ?? "YOUTUBE__Kor3aYn", days)
+            };
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
